@@ -1,11 +1,13 @@
-import Button from '../Button/Button';
-
-import './CartDropdown.scss';
 import {useContext} from 'react';
 import {CartContext} from '../../context/CartContext';
+import { useNavigate} from 'react-router-dom'
+import Button from '../Button/Button';
+import './CartDropdown.scss';
+
 
 const CartDropdown = () => {
   const { cartItems } = useContext(CartContext)
+  const navigate = useNavigate()
   return (
     <div className='cart-dropdown-container'>
       <div className='cart-items'>
@@ -28,7 +30,9 @@ const CartDropdown = () => {
           )
         }
       </div>
-      <Button buttonType='inverted'>CHECKOUT</Button>
+      <Button buttonType='inverted' onClick={() => {
+        navigate('/checkout')
+      }}>CHECKOUT</Button>
     </div>
   )
 }
