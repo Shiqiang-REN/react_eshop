@@ -13,7 +13,8 @@ const Navigation = () => {
   const { isCartOpen, setIsCartOpen  } = useContext(CartContext)
 
   const signOutHandler = async () => {
-    await signOutUser();
+    // await signOutUser();
+    localStorage.removeItem('token')
     setCurrentUser(null);
   }
 

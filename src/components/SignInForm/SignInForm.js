@@ -8,12 +8,15 @@ import Button from '../Button/Button';
 import FormInput from '../FormInput/FormInput';
 import {UserContext} from '../../context/UserContext';
 import './SignInForm.styles.scss'
+import {reqLogin} from '../../api';
+
 
 const SignInForm = () => {
   const [formFields, setFormFields] = useState({
     email: '',
     password: '',
   })
+
   const { email, password } = formFields
 
   const {setCurrentUser} = useContext(UserContext)
@@ -27,11 +30,17 @@ const SignInForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
-      const { user } = await signInAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
-      setCurrentUser(user)
+      // const { user } = await signInAuthUserWithEmailAndPassword(
+      //   email,
+      //   password
+      // );
+
+      const {status, data} = await reqLogin( email,password)
+      if(status === 0){
+        const {user, token} = data
+        localStorage.setItem('token', JSON.stringify(token))
+        setCurrentUser(user)
+      }
       resetFormFields();
     } catch (error) {
       switch (error.code) {

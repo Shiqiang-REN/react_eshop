@@ -4,6 +4,7 @@ import './SignUpForm.styles.scss'
 import {createAuthUserWithEmailAndPassword, createUserDocumentFromAuth} from '../../utils/firebase';
 import Button from '../Button/Button';
 import {UserContext} from '../../context/UserContext';
+import {reqRegister} from '../../api';
 
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState({
@@ -23,12 +24,16 @@ const SignUpForm = () => {
       return
     }
     try {
-      const { user } = await createAuthUserWithEmailAndPassword(
-        email,
-        password
-      )
-      setCurrentUser(user)
-      await createUserDocumentFromAuth(user, { displayName });
+      // const { user } = await createAuthUserWithEmailAndPassword(
+      //   email,
+      //   password
+      // )
+      const { status, data, msg } = await reqRegister({email, password, displayName})
+      if(status === 0) setCurrentUser(data)
+      else{
+        console.log(msg)
+      }
+      // await createUserDocumentFromAuth(user, { displayName });
       resetFormFields()
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {

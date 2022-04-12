@@ -1,70 +1,39 @@
 import ProductCard from '../../components/ProductCard/ProductCard';
 import './Shop.styles.scss'
-const products = [
-  {
-    "id": 1,
-    "name": "Brown Brim",
-    "imageUrl": "https://i.ibb.co/ZYW3VTp/brown-brim.png",
-    "price": 25
-  },
-  {
-    "id": 2,
-    "name": "Blue Beanie",
-    "imageUrl": "https://i.ibb.co/ypkgK0X/blue-beanie.png",
-    "price": 18
-  },
-  {
-    "id": 3,
-    "name": "Brown Cowboy",
-    "imageUrl": "https://i.ibb.co/QdJwgmp/brown-cowboy.png",
-    "price": 35
-  },
-  {
-    "id": 4,
-    "name": "Grey Brim",
-    "imageUrl": "https://i.ibb.co/RjBLWxB/grey-brim.png",
-    "price": 25
-  },
-  {
-    "id": 5,
-    "name": "Green Beanie",
-    "imageUrl": "https://i.ibb.co/YTjW3vF/green-beanie.png",
-    "price": 18
-  },
-  {
-    "id": 6,
-    "name": "Palm Tree Cap",
-    "imageUrl": "https://i.ibb.co/rKBDvJX/palm-tree-cap.png",
-    "price": 14
-  },
-  {
-    "id": 7,
-    "name": "Red Beanie",
-    "imageUrl": "https://i.ibb.co/bLB646Z/red-beanie.png",
-    "price": 18
-  },
-  {
-    "id": 8,
-    "name": "Wolf Cap",
-    "imageUrl": "https://i.ibb.co/1f2nWMM/wolf-cap.png",
-    "price": 14
-  },
-  {
-    "id": 9,
-    "name": "Blue Snapback",
-    "imageUrl": "https://i.ibb.co/X2VJP2W/blue-snapback.png",
-    "price": 16
-  }
-]
+import {reqProductList} from '../../api';
+import {useEffect, useState} from 'react';
 
 const Shop = () => {
+
+  const [products, setProducts] = useState([])
+  useEffect(() => {
+    fetchProducts(1,10)
+  }, [])
+
+  const fetchProducts = async (pageNum, pageSize) => {
+    let result = await reqProductList(pageNum, pageSize)
+    const {status, data} = result
+    if(status === 0){
+      setProducts(data.list)
+    }
+  }
+
+  const handleLoadMoreProducts = () => {
+
+  }
+
   return (
-    <div className='products-container'>
-      {products.map( (product) => {
-        return <ProductCard key={product.id} product={product} />
-      })}
-    </div>
-  );
+    <>
+      <div className='products-container'>
+        {products.map( (product) => {
+          return <ProductCard key={product._id} product={product} />
+        })}
+      </div>
+      <div className='loading-container'>
+        <button className='btn loading-button' onClick={handleLoadMoreProducts}>Show More Items</button>
+      </div>
+    </>
+  )
 }
 
 export default Shop;

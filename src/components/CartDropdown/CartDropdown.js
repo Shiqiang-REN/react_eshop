@@ -3,6 +3,7 @@ import {CartContext} from '../../context/CartContext';
 import { useNavigate} from 'react-router-dom'
 import Button from '../Button/Button';
 import './CartDropdown.scss';
+import {BASE_URL} from '../../config';
 
 
 const CartDropdown = () => {
@@ -14,10 +15,10 @@ const CartDropdown = () => {
         {
           cartItems.length ? (
             cartItems.map( (item) => {
-              const { id, imageUrl, price, name, quantity } = item
+              const { _id, imgs, price, name, quantity } = item
               return (
-                <div key={id} className='cart-item-container'>
-                  <img src={imageUrl} alt={`${name}`} />
+                <div key={_id} className='cart-item-container'>
+                  <img src={`${BASE_URL}/upload/${imgs[0]}`} alt={`${name}`} />
                   <div className='item-details'>
                     <span className='name'>{name}</span>
                     <span className='price'>{quantity} x ${price}</span>

@@ -2,19 +2,19 @@ import { useContext } from 'react';
 
 import { CartContext } from '../../context/CartContext';
 import './CheckoutItem.scss'
+import {BASE_URL} from '../../config';
 
 
 const CheckoutItem = ({ cartItem }) => {
-  const { name, imageUrl, price, quantity } = cartItem;
+  const { name, imgs, price, quantity } = cartItem;
 
   const { clearItemFromCart, addItemToCart, removeItemToCart } =
     useContext(CartContext);
 
-
   return (
     <div className='checkout-item-container'>
       <div className='image-container'>
-        <img src={imageUrl} alt={`${name}`} />
+        <img src={`${BASE_URL}/upload/${imgs[0]}`} alt={`${name}`} />
       </div>
       <span className='name'> {name} </span>
       <span className='quantity'>
