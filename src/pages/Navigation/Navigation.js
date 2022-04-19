@@ -1,7 +1,6 @@
-import React, {Fragment, useContext} from 'react';
+import React, {useContext} from 'react';
 import {Link, Outlet} from 'react-router-dom';
 import {UserContext} from '../../context/UserContext';
-import { signOutUser } from '../../utils/firebase'
 import {ReactComponent as Logo} from '../../assets/images/logo.svg'
 import './Navigation.styles.scss'
 import {CartContext} from '../../context/CartContext';
@@ -10,26 +9,31 @@ import CartDropdown from '../../components/CartDropdown/CartDropdown';
 
 const Navigation = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext)
-  const { isCartOpen, setIsCartOpen  } = useContext(CartContext)
+  const { isCartOpen  } = useContext(CartContext)
 
   const signOutHandler = async () => {
-    // await signOutUser();
     localStorage.removeItem('token')
     setCurrentUser(null);
   }
 
   return (
-    <Fragment>
+    <>
       <div className='navigation'>
         <Link className='logo-container' to='/'>
           <Logo className='logo'/>
         </Link>
+        <Link to='/'>
+          <h1>EasyShop</h1>
+        </Link>
         <div className='nav-links'>
-          <Link className='nav-link' to='/shop'>Shop</Link>
+          <Link className='nav-link' to='/shop/products'>Shop</Link>
           {currentUser? (
-            <span className='nav-link' onClick={signOutHandler}>
+            <div>
+              <span>Hi, {currentUser.displayName}</span>
+              <span className='nav-link' onClick={signOutHandler}>
               Sign Out
             </span>
+            </div>
           ):(
             <Link className='nav-link' to='/auth'>
               Sign in
@@ -40,8 +44,8 @@ const Navigation = () => {
         </div>
       </div>
       <Outlet/>
-    </Fragment>
-  );
+    </>
+  )
 }
 
 export default Navigation;

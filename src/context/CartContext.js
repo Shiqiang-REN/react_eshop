@@ -28,7 +28,7 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
     return cartItems.filter((cartItem) => cartItem._id !== cartItemToRemove._id);
   }
 
-  // return back cartitems with matching cart item with reduced quantity
+  // return cart items with matching cart item with reduced quantity
   return cartItems.map((cartItem) =>
     cartItem._id === cartItemToRemove._id
       ? { ...cartItem, quantity: cartItem.quantity - 1 }

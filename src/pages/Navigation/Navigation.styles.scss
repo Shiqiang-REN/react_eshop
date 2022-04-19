@@ -2,16 +2,16 @@
   height: 70px;
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 25px;
+  margin-top: 25px;
+  justify-content: space-around;
+  padding: 0 3rem;
 
   .logo-container {
     height: 100%;
     width: 70px;
-    padding: 25px;
     .logo{
-      height: 60px;
-      width: 60px;
+      height: 100%;
+      width: 100%;
     }
   }
 

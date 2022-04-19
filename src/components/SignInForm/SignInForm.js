@@ -1,9 +1,6 @@
-import {
-  signInWithGooglePopup,
-  createUserDocumentFromAuth,
-  signInAuthUserWithEmailAndPassword
-} from '../../utils/firebase';
+import {  signInWithGooglePopup } from '../../utils/firebase';
 import {useContext, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import Button from '../Button/Button';
 import FormInput from '../FormInput/FormInput';
 import {UserContext} from '../../context/UserContext';
@@ -12,6 +9,8 @@ import {reqLogin} from '../../api';
 
 
 const SignInForm = () => {
+
+  const navigate = useNavigate()
   const [formFields, setFormFields] = useState({
     email: '',
     password: '',
@@ -23,46 +22,30 @@ const SignInForm = () => {
 
   const signInWithGoogle = async () => {
     const { user } = await signInWithGooglePopup()
-    let response = await createUserDocumentFromAuth(user)
     setCurrentUser(user)
+    navigate(-1)
   }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    try {
-      // const { user } = await signInAuthUserWithEmailAndPassword(
-      //   email,
-      //   password
-      // );
-
-      const {status, data} = await reqLogin( email,password)
-      if(status === 0){
-        const {user, token} = data
-        localStorage.setItem('token', JSON.stringify(token))
-        setCurrentUser(user)
-      }
-      resetFormFields();
-    } catch (error) {
-      switch (error.code) {
-        case 'auth/wrong-password':
-          alert('incorrect password for email');
-          break;
-        case 'auth/user-not-found':
-          alert('no user associated with this email');
-          break;
-        default:
-          console.log(error);
-      }
+    const {status, data} = await reqLogin( email,password)
+    if(status === 0){
+      const {user, token} = data
+      localStorage.setItem('token', JSON.stringify(token))
+      setCurrentUser(user)
+      navigate(-1)
     }
+    resetFormFields()
+
   }
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormFields({ ...formFields, [name]: value });
+    setFormFields({ ...formFields, [name]: value })
   }
 
   const resetFormFields = () => {
-    setFormFields({email: '', password: ''});
+    setFormFields({email: '', password: ''})
   }
 
   return (

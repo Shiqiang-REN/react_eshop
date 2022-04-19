@@ -32,6 +32,7 @@ const CartDropdown = () => {
         }
       </div>
       <Button buttonType='inverted' onClick={() => {
+        console.log('checkout')
         navigate('/checkout')
       }}>CHECKOUT</Button>
     </div>

@@ -17,10 +17,13 @@ const ProductCard = ({ product }) => {
         })
       }
       <div className='footer'>
-        <span className='name'>{name}</span>
-        <span className='price'>{price}</span>
+        <h5 className='name'>{name}</h5>
+        <h5 >${price}</h5>
       </div>
-      <Button buttonType='inverted' onClick={() => {addItemToCart(product)}}>Add to card</Button>
+      <div className='buttons-container'>
+        {/*<Button buttonType='inverted' onClick={() => {addItemToCart(product)}}>View</Button>*/}
+        <Button buttonType='inverted' onClick={() => {addItemToCart(product)}}>Add</Button>
+      </div>
     </div>
   );
 };

@@ -1,12 +1,14 @@
 import React, {useContext, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import FormInput from '../FormInput/FormInput';
 import './SignUpForm.styles.scss'
-import {createAuthUserWithEmailAndPassword, createUserDocumentFromAuth} from '../../utils/firebase';
 import Button from '../Button/Button';
 import {UserContext} from '../../context/UserContext';
-import {reqRegister} from '../../api';
+import {reqLogin, reqRegister} from '../../api';
 
 const SignUpForm = () => {
+
+  const navigate = useNavigate()
   const [formFields, setFormFields] = useState({
     displayName: '',
     email: '',
@@ -23,25 +25,19 @@ const SignUpForm = () => {
       alert('passwords do not match');
       return
     }
-    try {
-      // const { user } = await createAuthUserWithEmailAndPassword(
-      //   email,
-      //   password
-      // )
-      const { status, data, msg } = await reqRegister({email, password, displayName})
-      if(status === 0) setCurrentUser(data)
-      else{
-        console.log(msg)
+    const { status, msg } = await reqRegister({email, password, displayName})
+    if(status === 0) {
+      const {status, data} = await reqLogin( email,password)
+      if(status === 0){
+        const {user, token} = data
+        localStorage.setItem('token', JSON.stringify(token))
+        setCurrentUser(user)
+        navigate(-1)
       }
-      // await createUserDocumentFromAuth(user, { displayName });
-      resetFormFields()
-    } catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
-        alert('Cannot create user, email already in use');
-      } else {
-        console.log('user creation encountered an error', error);
-      }
+    }else{
+      alert(msg)
     }
+    resetFormFields()
   }
   const handleChange= (event)=> {
     const { name, value } = event.target;
